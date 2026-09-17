@@ -16,6 +16,7 @@ public class GuitarHeroLite {
         /* create two guitar strings, for concert A and C */
         GuitarString stringA = new GuitarString(CONCERT_A);
         GuitarString stringC = new GuitarString(CONCERT_C);
+
         StdDraw.setCanvasSize(WIDTH, HEIGHT);
         StdDraw.setXscale(0, WIDTH);
         StdDraw.setYscale(0, HEIGHT);
@@ -23,6 +24,7 @@ public class GuitarHeroLite {
         StdDraw.setPenRadius(0.05);
         StdDraw.text(WIDTH / 2, (HEIGHT + 16) / 2, "Play the guitar!");
         StdDraw.text(WIDTH / 2, (HEIGHT - 32) / 2, "Type A or C");
+
         while (true) {
 
             /* check if the user has typed a key; if so, process it */
