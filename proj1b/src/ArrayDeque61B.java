@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class ArrayDeque61B<T> implements Deque61B<T> {
@@ -9,6 +10,31 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
     private int nextLast;
     private int size;
 
+    private class ArrayDeque61BIterator implements Iterator<T> {
+
+        int pos;
+
+        public ArrayDeque61BIterator() {
+            pos = 0;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return pos < size;
+        }
+
+        @Override
+        public T next() {
+            T returnItem = get(pos);
+            pos++;
+            return returnItem;
+        }
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new ArrayDeque61BIterator();
+    }
 
     public ArrayDeque61B() {
         items = (T[]) new Object[8];
@@ -138,5 +164,35 @@ public class ArrayDeque61B<T> implements Deque61B<T> {
     @Override
     public T getRecursive(int index) {
         throw new UnsupportedOperationException("No need to implement this method");
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+
+        if (obj instanceof Deque61B arrayDeque) {
+            if (arrayDeque.size() != this.size()) {
+                return false;
+            }
+
+            int idx = 0;
+            for (T x : this) {
+                if (!x.equals(arrayDeque.get(idx))) {
+                    return false;
+                }
+                idx++;
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return this.toList().toString();
     }
 }

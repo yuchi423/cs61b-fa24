@@ -1,5 +1,3 @@
-package deque;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -19,11 +17,11 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
 
     }
 
-    private class LinkedListDeque61BIterator implements Iterator{
+    private class LinkedListDeque61BIterator implements Iterator<T> {
 
         private Node curNode;
 
-        LinkedListDeque61BIterator(){
+        LinkedListDeque61BIterator() {
             curNode = sentinel.next;
         }
 
@@ -38,6 +36,7 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
             curNode = curNode.next;
             return returnItem;
         }
+
     }
 
     private int items;
@@ -151,5 +150,34 @@ public class LinkedListDeque61B<T> implements Deque61B<T> {
     @Override
     public Iterator<T> iterator() {
         return new LinkedListDeque61BIterator();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj instanceof Deque61B linkedListDeque) {
+            if (this.size() != linkedListDeque.size()) {
+                return false;
+            }
+
+            int trace = 0;
+            for (T x : this) {
+                if (!x.equals(linkedListDeque.get(trace))) {
+                    return false;
+                }
+                trace++;
+            }
+
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return this.toList().toString();
     }
 }
