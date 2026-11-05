@@ -1,4 +1,8 @@
+import edu.princeton.cs.algs4.BST;
+
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
@@ -105,18 +109,77 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         items = 0;
     }
 
+    private void collectKeys(BSTNode root, Set<K> st) {
+        if (root == null) return;
+
+        collectKeys(root.left, st);
+        st.add(root.key);
+        collectKeys(root.right, st);
+    }
+
     @Override
     public Set<K> keySet() {
-        return Set.of();
+        Set<K> keys = new HashSet<>();
+        collectKeys(root, keys);
+        return keys;
+    }
+
+    // 删除节点，返回删除后的子树根节点
+    private BSTNode delete(BSTNode node, K key){
+        if(node == null) return null;
+
+        int cmp = key.compareTo(node.key);
+
+        if(cmp < 0){
+            node.left = delete(node.left, key);
+        } else if (cmp > 0){
+            node.right = delete(node.right, key);
+        } else{
+            if(node.left == null) return node.right;
+            if(node.right == null) return node.left;
+
+            BSTNode successor = findMin(node.right);
+
+            node.key = successor.key;
+            node.val = successor.val;
+
+            node.right = deleteMin(node.right);
+        }
+
+        return node;
+    }
+
+    private BSTNode findMin(BSTNode node){
+        while(node.left != null){
+            node = node.left;
+        }
+        return node;
+    }
+
+    private BSTNode deleteMin(BSTNode node){
+        if(node.left == null) return node.right;
+
+        node.left = deleteMin(node.left);
+        return node;
     }
 
     @Override
     public V remove(K key) {
-        return null;
+        BSTNode target = findCurRoot(root, key);
+        if (target == null || key.compareTo(target.key) != 0) {
+            return null;
+        }
+
+        V oldValue = target.val;
+
+        root = delete(root, key);
+        items--;
+
+        return oldValue;
     }
 
     @Override
     public Iterator<K> iterator() {
-        return null;
+        return keySet().iterator();
     }
 }
